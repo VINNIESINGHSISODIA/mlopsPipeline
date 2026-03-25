@@ -1,0 +1,9 @@
+.env
+data/
+augmented/
+__pycache__/
+*.pyc
+*.jpg
+*.png
+*.jpeg
+*.zip
