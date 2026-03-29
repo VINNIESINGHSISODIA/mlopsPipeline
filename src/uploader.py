@@ -1,3 +1,5 @@
+#uploader.py can be removed(boto3 no longer needed)
+
 import os
 import boto3
 
