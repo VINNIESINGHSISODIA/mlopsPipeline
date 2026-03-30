@@ -1,10 +1,12 @@
+# Environment hides secrets
 .env
+
+# DVC dataset (VERY IMPORTANT) prevents pushing dataset to GitHub
 data/
-augmented/
+
+# Python cache removes junk
 __pycache__/
 *.pyc
-*.jpg
-*.png
-*.jpeg
+
+# Optional (compressed files)
 *.zip
-/data
