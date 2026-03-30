@@ -1,15 +1,14 @@
-from dotenv import load_dotenv
-load_dotenv()
 import os
 import random
 import shutil
-from datetime import datetime
 
 CLASSES = ['benign', 'malignant', 'normal']
 
-def sample_dataset(source_dir, output_base, samples_per_class=30):
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-    output_dir = os.path.join(output_base, timestamp)
+def sample_dataset(source_dir, output_dir, samples_per_class=30):
+    """
+    Samples images from source_dir and writes directly into output_dir
+    without creating timestamp folders.
+    """
 
     for cls in CLASSES:
         src_cls = os.path.join(source_dir, cls)
@@ -17,10 +16,18 @@ def sample_dataset(source_dir, output_base, samples_per_class=30):
 
         os.makedirs(tgt_cls, exist_ok=True)
 
+        if not os.path.exists(src_cls):
+            print(f"⚠️ Skipping missing class folder: {src_cls}")
+            continue
+
         images = [
             f for f in os.listdir(src_cls)
             if f.endswith(".png") and "_mask" not in f
         ]
+
+        if not images:
+            print(f"⚠️ No images found in {src_cls}")
+            continue
 
         selected = random.sample(images, min(samples_per_class, len(images)))
 
@@ -33,7 +40,7 @@ def sample_dataset(source_dir, output_base, samples_per_class=30):
             img_dst  = os.path.join(tgt_cls, img)
             mask_dst = os.path.join(tgt_cls, base + "_mask.png")
 
-            # ✅ CACHE: skip if already exists
+            # skip if already exists
             if os.path.exists(img_dst):
                 continue
 
@@ -44,5 +51,5 @@ def sample_dataset(source_dir, output_base, samples_per_class=30):
 
         print(f"{cls}: {len(selected)} sampled")
 
-    print(f"\n📁 Sampled dataset: {output_dir}")
+    print(f"\n📁 Sampled dataset written to: {output_dir}")
     return output_dir
