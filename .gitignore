@@ -10,3 +10,4 @@ __pycache__/
 
 # Optional (compressed files)
 *.zip
+/data
