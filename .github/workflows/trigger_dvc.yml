@@ -1,0 +1,19 @@
+name: Trigger Downstream Training
+
+on:
+  push:
+    paths:
+      - 'data.dvc'
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notify downstream repo
+        run: |
+          curl -X POST https://api.github.com/repos/adithi2000/breast_cancer_segCls_model/dispatches \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.REPO_ACCESS_TOKEN }}" \
+          -d '{"event_type":"dvc_updated"}'
